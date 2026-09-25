@@ -52,8 +52,10 @@ def breadth_first_search(stack):
     if stack.check_ordered():
         return flip_sequence
 
-    # numpy arrays aren't hashable, tuple them so they can go in a set
-    # (튜플로 바꿔야 set 에 넣을 수 있음)
+    # numpy arrays aren't hashable
+    # and tuple them so they can go in a set
+    # 튜플로 바꿔야 set 에 넣을 수 있음. 근데 헷갈리니까 이따 돌아오기
+    # might need to come back later
     start_state = (tuple(stack.order), tuple(stack.orientations))
     been_there = {start_state}
 
@@ -70,10 +72,12 @@ def breadth_first_search(stack):
             new_stack.flip_stack(point_here)
             new_state = (tuple(new_stack.order), tuple(new_stack.orientations))
 
+            # pass in here
             if new_state in been_there:
                 continue
             been_there.add(new_state)
 
+            # save the info here
             new_path = path_sofar_used + [point_here]
 
             if new_stack.check_ordered():
@@ -89,14 +93,17 @@ def depth_first_search(stack):
     flip_sequence = []
 
     # --- v ADD YOUR CODE HERE v --- #
+    # should be in the order
     if stack.check_ordered():
         return flip_sequence
 
+    # 돌아오기
     start_state = (tuple(stack.order), tuple(stack.orientations))
     been_there = {start_state}
 
-    # same loop as BFS below, just a stack instead of a queue --
-    # that one change (pop vs popleft) is what makes this DFS
+    # same loop as BFS below
+    # just a stack instead of a queue
+    # the change (pop vs popleft) is what makes this DFS
     backup = [(stack, flip_sequence)]
 
     while backup:
@@ -107,12 +114,14 @@ def depth_first_search(stack):
             new_stack.flip_stack(point_here)
             new_state = (tuple(new_stack.order), tuple(new_stack.orientations))
 
+            # let's pass
             if new_state in been_there:
                 continue
             been_there.add(new_state)
 
             new_path = path_sofar_used + [point_here]
 
+            # return here
             if new_stack.check_ordered():
                 return new_path
 
