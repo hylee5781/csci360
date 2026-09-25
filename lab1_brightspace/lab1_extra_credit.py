@@ -1,51 +1,135 @@
-# Lab 1 Extra Credit: average number of flips vs n, for BFS and DFS.
+# Lab 1 Extra Credit (Problem 3): exhaustive analysis for n = 1..5.
 # 이 파일은 채점 대상인 lab1.py 가 아니라 추가 분석용 스크립트임.
+# For every possible initial stack of each n, run BFS and DFS, then
+# average the number of flips AND the number of nodes traversed.
 
-import random
+import itertools
+from collections import deque
 import matplotlib.pyplot as plt
-from lab1 import TextbookStack, breadth_first_search, depth_first_search
+from lab1 import TextbookStack
 
 
-def average_flips_by_n(search_function, n_values, num_samples):
-    # returns avg flips for each n
+def bfs_with_node_count(stack):
+    # same BFS as lab1.py, but also counts nodes traversed
+    # 노드 수 = 탐색하면서 방문한 서로 다른 state 개수
+    start_state = (tuple(stack.order), tuple(stack.orientations))
+    been_there = {start_state}
+
+    if stack.check_ordered():
+        return [], len(been_there)
+
+    pending_tbd = deque()
+    pending_tbd.append((stack, []))
+
+    while pending_tbd:
+        stack_rightnow, path_sofar_used = pending_tbd.popleft()
+
+        for point_here in range(1, stack_rightnow.num_books + 1):
+            new_stack = stack_rightnow.copy()
+            new_stack.flip_stack(point_here)
+            new_state = (tuple(new_stack.order), tuple(new_stack.orientations))
+
+            if new_state in been_there:
+                continue
+            been_there.add(new_state)
+
+            new_path = path_sofar_used + [point_here]
+
+            if new_stack.check_ordered():
+                return new_path, len(been_there)
+
+            pending_tbd.append((new_stack, new_path))
+
+    return [], len(been_there)
+
+
+def dfs_with_node_count(stack):
+    # same DFS as lab1.py, but also counts nodes traversed
+    start_state = (tuple(stack.order), tuple(stack.orientations))
+    been_there = {start_state}
+
+    if stack.check_ordered():
+        return [], len(been_there)
+
+    backup = [(stack, [])]
+
+    while backup:
+        stack_rightnow, path_sofar_used = backup.pop()
+
+        for point_here in range(1, stack_rightnow.num_books + 1):
+            new_stack = stack_rightnow.copy()
+            new_stack.flip_stack(point_here)
+            new_state = (tuple(new_stack.order), tuple(new_stack.orientations))
+
+            if new_state in been_there:
+                continue
+            been_there.add(new_state)
+
+            new_path = path_sofar_used + [point_here]
+
+            if new_stack.check_ordered():
+                return new_path, len(been_there)
+
+            backup.append((new_stack, new_path))
+
+    return [], len(been_there)
+
+
+def all_initial_stacks(n):
+    # every possible (order, orientations) pair, 2^n * n! total
+    all_stacks = []
+    for order in itertools.permutations(range(n)):
+        for orientations in itertools.product([0, 1], repeat=n):
+            all_stacks.append((list(order), list(orientations)))
+    return all_stacks
+
+
+def average_flips_and_nodes(search_function_with_count, n_values):
+    # exhaustive average, per n, of flips and nodes traversed
     average_flips_list = []
+    average_nodes_list = []
 
     for n in n_values:
         total_flips = 0
+        total_nodes = 0
+        all_stacks = all_initial_stacks(n)
 
-        for sample_num in range(num_samples):
-            # make one random stack of size n
-            random_order = list(range(n))
-            random.shuffle(random_order)
-            random_orientations = [random.randint(0, 1) for i in range(n)]
-
-            random_stack = TextbookStack(random_order, random_orientations)
-
-            # run the search, count its flips
-            flip_sequence = search_function(random_stack)
+        for order, orientations in all_stacks:
+            one_stack = TextbookStack(order, orientations)
+            flip_sequence, node_count = search_function_with_count(one_stack)
             total_flips = total_flips + len(flip_sequence)
+            total_nodes = total_nodes + node_count
 
-        # average over all samples for this n
-        average_flips = total_flips / num_samples
-        average_flips_list.append(average_flips)
+        num_stacks = len(all_stacks)
+        average_flips_list.append(total_flips / num_stacks)
+        average_nodes_list.append(total_nodes / num_stacks)
+        print(f"  n={n} done ({num_stacks} stacks)")
 
-    return average_flips_list
+    return average_flips_list, average_nodes_list
 
 
 if __name__ == "__main__":
-    random.seed(0)  # same random stacks every run
+    n_values = [1, 2, 3, 4, 5]
 
-    n_values = [1, 2, 3, 4, 5, 6]
-    num_samples = 20
+    print("running BFS over all stacks...")
+    bfs_average_flips, bfs_average_nodes = average_flips_and_nodes(bfs_with_node_count, n_values)
 
-    bfs_average_flips = average_flips_by_n(breadth_first_search, n_values, num_samples)
-    dfs_average_flips = average_flips_by_n(depth_first_search, n_values, num_samples)
+    print("running DFS over all stacks...")
+    dfs_average_flips, dfs_average_nodes = average_flips_and_nodes(dfs_with_node_count, n_values)
 
-    print("n values:", n_values)
+    print("\nn values:", n_values)
     print("BFS average flips:", bfs_average_flips)
+    print("BFS average nodes:", bfs_average_nodes)
     print("DFS average flips:", dfs_average_flips)
+    print("DFS average nodes:", dfs_average_nodes)
 
-    # figure 1: BFS
+    # table required by the assignment
+    print("\nn | BFS avg flips | BFS avg nodes | DFS avg flips | DFS avg nodes")
+    for i, n in enumerate(n_values):
+        print(f"{n} | {bfs_average_flips[i]:.3f} | {bfs_average_nodes[i]:.3f} | "
+              f"{dfs_average_flips[i]:.3f} | {dfs_average_nodes[i]:.3f}")
+
+    # figure 1: BFS average flips vs n
     plt.figure()
     plt.plot(n_values, bfs_average_flips, marker="o")
     plt.xlabel("n (number of books)")
@@ -53,7 +137,7 @@ if __name__ == "__main__":
     plt.title("BFS: average flips vs n")
     plt.savefig("bfs_average_flips.png")
 
-    # figure 2: DFS
+    # figure 2: DFS average flips vs n
     plt.figure()
     plt.plot(n_values, dfs_average_flips, marker="o")
     plt.xlabel("n (number of books)")
