@@ -57,7 +57,7 @@ def apply_sequence(stack, sequence):
 
 
 # how many states got popped and expanded in the last search
-# (only for the extra credit tables)
+# this is for extra credit
 nodes_visited = 0
 
 
@@ -66,14 +66,18 @@ def a_star_search(stack):
 
     # --- v ADD YOUR CODE HERE v --- #
     global nodes_visited
+    # i need to set it for 0 for now
     nodes_visited = 0
 
     num_books = stack.num_books
 
-    # numpy arrays aren't hashable -> plain tuples of ints
+    # numpy arrays aren't hashable 
+    # imma make plain tuples of ints
+    # empty lists for now
     start_order = []
     start_face = []
     for i in range(0, num_books):
+        # append it
         start_order.append(int(stack.order[i]))
         start_face.append(int(stack.orientations[i]))
     start_state = (tuple(start_order), tuple(start_face))
@@ -81,21 +85,28 @@ def a_star_search(stack):
     # reached_goal: book i at spot i, all facing up
     reached_goal = True
     for i in range(0, num_books):
+        # true branch
         if start_order[i] != i:
             reached_goal = False
         if start_face[i] != 1:
             reached_goal = False
 
-    # already sorted -> nothing to do (이미 정렬돼 있으면 끝)
+    # already sorted 
+    # nothing to do 
+    # 이미 정렬돼 있으면 끝
     if reached_goal == True:
         return flip_sequence
 
     # count_bad_pairs: count neighbor pairs that are NOT a good pair
     # good pair = both face up and going up by 1,
     #          or both face down and going down by 1
-    # anything else hits (a), (b), (c) or (d) -> count it once
-    # one flip only changes the pair at the cut, so h drops by at most 1
+    # anything else hits (a), (b), (c) or (d) 
+    # so its like count it once
+    # one flip only changes the pair at the cut
+    # so h drops by at most 1
     # -> admissible (never overestimates)
+    
+    # start from 0, top of hte stack
     mess_count = 0
     for i in range(0, num_books - 1):
         top_book = start_order[i]
@@ -259,7 +270,7 @@ def weighted_a_star_search(stack, epsilon=None, N=1):
         start_face.append(int(stack.orientations[i]))
     start_state = (tuple(start_order), tuple(start_face))
 
-    # reached_goal: book i at spot i, all facing up
+    # reached_goal is book i at spot i, all facing up
     reached_goal = True
     for i in range(0, num_books):
         if start_order[i] != i:
@@ -270,7 +281,7 @@ def weighted_a_star_search(stack, epsilon=None, N=1):
     if reached_goal == True:
         return flip_sequence
 
-    # count_bad_pairs: same heuristic as A*
+    # count_bad_pairs is same heuristic as A*
     mess_count = 0
     for i in range(0, num_books - 1):
         top_book = start_order[i]
