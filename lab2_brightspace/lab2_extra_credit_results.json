@@ -1,0 +1,146 @@
+[
+  {
+    "m": 1,
+    "num_stacks": 2,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 0.5,
+      "average_nodes": 1.0,
+      "total_time": 2.2499822080135345e-05,
+      "average_time": 1.1249911040067673e-05
+    },
+    "weighted": {
+      "average_flips": 0.5,
+      "average_nodes": 1.0,
+      "total_time": 1.5541212633252144e-05,
+      "average_time": 7.770606316626072e-06
+    },
+    "weighted_worse_count": 0
+  },
+  {
+    "m": 2,
+    "num_stacks": 8,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 2.0,
+      "average_nodes": 4.0,
+      "total_time": 9.454204700887203e-05,
+      "average_time": 1.1817755876109004e-05
+    },
+    "weighted": {
+      "average_flips": 2.0,
+      "average_nodes": 3.5,
+      "total_time": 4.620780237019062e-05,
+      "average_time": 5.7759752962738276e-06
+    },
+    "weighted_worse_count": 0
+  },
+  {
+    "m": 3,
+    "num_stacks": 48,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 3.4375,
+      "average_nodes": 13.0625,
+      "total_time": 0.0010197453666478395,
+      "average_time": 2.1244695138496656e-05
+    },
+    "weighted": {
+      "average_flips": 3.5,
+      "average_nodes": 7.166666666666667,
+      "total_time": 0.0006300853565335274,
+      "average_time": 1.3126778261115154e-05
+    },
+    "weighted_worse_count": 3
+  },
+  {
+    "m": 4,
+    "num_stacks": 384,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 4.796875,
+      "average_nodes": 45.927083333333336,
+      "total_time": 0.052283162949606776,
+      "average_time": 0.00013615407018126766
+    },
+    "weighted": {
+      "average_flips": 4.994791666666667,
+      "average_nodes": 12.1015625,
+      "total_time": 0.015356038929894567,
+      "average_time": 3.99896847132671e-05
+    },
+    "weighted_worse_count": 69
+  },
+  {
+    "m": 5,
+    "num_stacks": 3840,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 6.1171875,
+      "average_nodes": 169.2875,
+      "total_time": 2.414829809218645,
+      "average_time": 0.0006288619294840222
+    },
+    "weighted": {
+      "average_flips": 6.466145833333333,
+      "average_nodes": 18.082291666666666,
+      "total_time": 0.27867016778327525,
+      "average_time": 7.257035619356126e-05
+    },
+    "weighted_worse_count": 1151
+  },
+  {
+    "m": 6,
+    "num_stacks": 46080,
+    "how_chosen": "all",
+    "astar": {
+      "average_flips": 7.398980034722222,
+      "average_nodes": 597.5735243055556,
+      "total_time": 149.66879172530025,
+      "average_time": 0.003248020653760856
+    },
+    "weighted": {
+      "average_flips": 7.914756944444444,
+      "average_nodes": 26.30861545138889,
+      "total_time": 6.854011337738484,
+      "average_time": 0.00014874156548911642
+    },
+    "weighted_worse_count": 19216
+  },
+  {
+    "m": 7,
+    "num_stacks": 2000,
+    "how_chosen": "sample",
+    "astar": {
+      "average_flips": 8.6905,
+      "average_nodes": 2074.492,
+      "total_time": 32.76930394140072,
+      "average_time": 0.01638465197070036
+    },
+    "weighted": {
+      "average_flips": 9.417,
+      "average_nodes": 33.9345,
+      "total_time": 0.4953836761415005,
+      "average_time": 0.00024769183807075025
+    },
+    "weighted_worse_count": 1101
+  },
+  {
+    "m": 8,
+    "num_stacks": 2000,
+    "how_chosen": "sample",
+    "astar": {
+      "average_flips": 9.8515,
+      "average_nodes": 6353.7525,
+      "total_time": 137.393060533097,
+      "average_time": 0.06869653026654851
+    },
+    "weighted": {
+      "average_flips": 10.836,
+      "average_nodes": 41.7485,
+      "total_time": 0.7890370313543826,
+      "average_time": 0.00039451851567719133
+    },
+    "weighted_worse_count": 1299
+  }
+]
